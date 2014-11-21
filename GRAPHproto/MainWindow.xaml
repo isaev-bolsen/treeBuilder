@@ -3,15 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:src="clr-namespace:GRAPHproto"
         Title="MainWindow" Height="350" Width="500">
-    <Window.Resources>
-        <src:Centerator x:Key="Centrator"/>
-    </Window.Resources>
-    <Canvas x:Name="Canva" VerticalAlignment="Stretch" HorizontalAlignment="Center" FlowDirection="LeftToRight">
-        <Ellipse x:Name="ROOT" Canvas.Left="-5" Height="10" Width="10" HorizontalAlignment="Center" Stroke="Black" Fill="Black" VerticalAlignment="Center"/>
-        <DockPanel Canvas.Top="30" Canvas.Left="{Binding Path=ActualWidth, Converter={StaticResource Centrator}, RelativeSource={RelativeSource Mode=Self}}">
-            <Ellipse  Margin="10,10,10,10" Height="10" Width="10" HorizontalAlignment="Center" Stroke="Black" Fill="Black"/>
-            <Ellipse  Margin="10,10,10,10" Height="10" Width="10" HorizontalAlignment="Center" Stroke="Black" Fill="Black"/>
-            <Ellipse  Margin="10,10,10,10" Height="10" Width="10" HorizontalAlignment="Center" Stroke="Black" Fill="Black"/>
-        </DockPanel>
-    </Canvas>
+    <StackPanel x:Name="RootPanel" HorizontalAlignment="Center">
+      
+    </StackPanel>
 </Window>
