@@ -18,6 +18,21 @@ namespace GRAPHproto
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
+    [ValueConversion(typeof(Int32), typeof(Int32))]
+    public class Centerator : IValueConverter
+        {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            {
+            return (-((double)value) / 2);
+            }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+            {
+            return (-((int)value) * 2);
+
+            }
+        }
+    
     public partial class MainWindow : Window
         {
         public MainWindow()

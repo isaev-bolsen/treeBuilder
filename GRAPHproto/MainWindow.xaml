@@ -1,27 +1,17 @@
-﻿<Window x:Name="DOCK" x:Class="GRAPHproto.MainWindow"
+﻿<Window x:Class="GRAPHproto.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:src="clr-namespace:GRAPHproto"
         Title="MainWindow" Height="350" Width="500">
-    <StackPanel x:Name="ROOT">
-        <Grid Height="20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250*"/>
-                <ColumnDefinition Width="250*"/>
-            </Grid.ColumnDefinitions>
-            <Ellipse Margin="-5,5,5,5" Height="10" Width="10" HorizontalAlignment="Left" Stroke="Black" Fill="Black" Grid.Column="1"/>
-            <TextBox Margin=" 10, 0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2"/>
-        </Grid>
-        <DockPanel HorizontalAlignment="Center" Height="20">
-            
+    <Window.Resources>
+        <src:Centerator x:Key="Centrator"/>
+    </Window.Resources>
+    <Canvas x:Name="Canva" VerticalAlignment="Stretch" HorizontalAlignment="Center" FlowDirection="LeftToRight">
+        <Ellipse x:Name="ROOT" Canvas.Left="-5" Height="10" Width="10" HorizontalAlignment="Center" Stroke="Black" Fill="Black" VerticalAlignment="Center"/>
+        <DockPanel Canvas.Top="30" Canvas.Left="{Binding Path=ActualWidth, Converter={StaticResource Centrator}, RelativeSource={RelativeSource Mode=Self}}">
+            <Ellipse  Margin="10,10,10,10" Height="10" Width="10" HorizontalAlignment="Center" Stroke="Black" Fill="Black"/>
+            <Ellipse  Margin="10,10,10,10" Height="10" Width="10" HorizontalAlignment="Center" Stroke="Black" Fill="Black"/>
+            <Ellipse  Margin="10,10,10,10" Height="10" Width="10" HorizontalAlignment="Center" Stroke="Black" Fill="Black"/>
         </DockPanel>
-
-        <DockPanel HorizontalAlignment="Center">
-            <TextBox Margin="1, 1,1,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            <Ellipse Margin="5,5,5,5" Height="10" Width="10" HorizontalAlignment="Left" Stroke="Black" Fill="Black"/>
-            <Rectangle Margin="5,5,5,5" Height="10" Width="10" HorizontalAlignment="Center"/>
-            <Ellipse Margin="5,5,5,5" Height="10" Width="10" HorizontalAlignment="Left" Stroke="Black" Fill="Black"/>
-            <TextBox Margin="1, 1,1,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        </DockPanel>
-    </StackPanel>
-     
+    </Canvas>
 </Window>
