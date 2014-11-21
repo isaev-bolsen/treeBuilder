@@ -28,12 +28,6 @@ namespace GRAPHproto
             {
             InitializeComponent();
             root=new Node(RootPanel);
-            Node Node1 = root.AddChild();
-            Node Node2 = root.AddChild();
-            Node Node3 = Node1.AddChild();
-            Node Node4 = Node1.AddChild();
-            Node Node5 = Node1.AddChild();
-            Node Node6 = Node1.AddChild();
             }
         }
     }

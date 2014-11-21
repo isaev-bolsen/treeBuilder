@@ -15,24 +15,37 @@ using System.Windows.Shapes;
 
 namespace GRAPHproto
     {
-    class Node
+
+
+    class Node : StackPanel
         {
+
         private StackPanel ParentPanel;
-        private StackPanel thisVerticalPanel=new StackPanel();
         private UIElement NodeVisualObject = new Ellipse() {Width=15, Height=15, Margin=new Thickness(10), Fill=Brushes.Black};
         private StackPanel thisHorisontalPanel = new StackPanel() {Orientation=Orientation.Horizontal };
 
-        public Node AddChild()
+        public void AddChild(object sender, MouseButtonEventArgs e)
             {
-            return new Node(thisHorisontalPanel); 
+            switch (e.ChangedButton)
+                {
+                case MouseButton.Left:
+                        new Node(thisHorisontalPanel);
+                        break;
+                case MouseButton.Right:
+                        ParentPanel.Children.Remove(this);
+                    break;
+                  
+                }
             }
 
         public Node(StackPanel parentPanel)
             {
+            //NodeVisualObject.AddHandler(UIElement.MouseDownEvent, AddChild);
+            NodeVisualObject.MouseDown += AddChild;
             ParentPanel = parentPanel;
-            ParentPanel.Children.Add(thisVerticalPanel);
-            thisVerticalPanel.Children.Add(NodeVisualObject);
-            thisVerticalPanel.Children.Add(thisHorisontalPanel);
+            ParentPanel.Children.Add(this);
+            this.Children.Add(NodeVisualObject);
+            this.Children.Add(thisHorisontalPanel);
             }
         }
     }
