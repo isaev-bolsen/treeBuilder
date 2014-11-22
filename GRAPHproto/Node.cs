@@ -19,9 +19,9 @@ namespace GRAPHproto
 
     class Node : StackPanel
         {
-
+        private bool isRoot;
         private StackPanel ParentPanel;
-        private UIElement NodeVisualObject = new Ellipse() {Width=15, Height=15, Margin=new Thickness(10), Fill=Brushes.Black};
+        private FrameworkElement NodeVisualObject = new Ellipse() {Width=15, Height=15, Margin=new Thickness(15), Fill=Brushes.Black};
         private StackPanel thisHorisontalPanel = new StackPanel() {Orientation=Orientation.Horizontal };
 
         public void AddChild(object sender, MouseButtonEventArgs e)
@@ -30,17 +30,25 @@ namespace GRAPHproto
                 {
                 case MouseButton.Left:
                         new Node(thisHorisontalPanel);
-                        break;
-                case MouseButton.Right:
-                        ParentPanel.Children.Remove(this);
+                        //this.NodeVisualObject.Margin = new Thickness(
+                        //    this.NodeVisualObject.Margin.Left,
+                        //    this.NodeVisualObject.Margin.Top,
+                        //    this.NodeVisualObject.Margin.Right,
+                        //    this.NodeVisualObject.Margin.Bottom + 5
+                        //    );
                     break;
-                  
+                case MouseButton.Right:
+                    if (!isRoot)
+                    { 
+                        ParentPanel.Children.Remove(this); 
+                        }
+                    break;
                 }
             }
 
-        public Node(StackPanel parentPanel)
+        public Node(StackPanel parentPanel, bool isroot=false)
             {
-            //NodeVisualObject.AddHandler(UIElement.MouseDownEvent, AddChild);
+            isRoot = isroot;
             NodeVisualObject.MouseDown += AddChild;
             ParentPanel = parentPanel;
             ParentPanel.Children.Add(this);
