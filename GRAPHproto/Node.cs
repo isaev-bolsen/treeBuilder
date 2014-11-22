@@ -24,6 +24,14 @@ namespace GRAPHproto
         protected Line Edge;
         protected TextBox EdgeCaption = new TextBox();
 
+       public void SetTextBoxBrushRecursive(Brush brush)
+            {
+           //it must be the better way to do that
+            EdgeCaption.BorderBrush = brush;
+            foreach (Node node in HorisontalPanel.Children) node.SetTextBoxBrushRecursive(brush);
+            }
+
+
         public void UpdateEdges(object sender, SizeChangedEventArgs e)
             {
             double Xpos=-this.HorisontalPanel.ActualWidth/2;
@@ -61,7 +69,7 @@ namespace GRAPHproto
                 case MouseButton.Left:
                     Line edge = new Line() {X1 = 0, X2 = 0, Stroke = Brushes.Black};
                     EdgeCanvas.Children.Add(edge);
-                    TextBox edgeCaption = new TextBox() {Background = null, SelectionBrush = null};
+                    TextBox edgeCaption = new TextBox() {Background = null, SelectionBrush = null, BorderBrush=Brushes.Gray};
                     Canvas.SetLeft(edgeCaption,  -5);
                     EdgeCanvas.Children.Add(edgeCaption);
                     new Node(HorisontalPanel, edge, edgeCaption);

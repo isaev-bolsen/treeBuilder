@@ -33,6 +33,7 @@ namespace GRAPHproto
 
         private void CopyImg(object sender, RoutedEventArgs e)
             {
+            root.SetTextBoxBrushRecursive(null);
             bool? result=dlg.ShowDialog();
             if (result==true)
                 {
@@ -45,6 +46,7 @@ namespace GRAPHproto
                 encoder.Save(stream);
                 stream.Close();
                 }
+            root.SetTextBoxBrushRecursive(Brushes.Gray);
             }
         }
     }
