@@ -27,7 +27,7 @@ namespace GRAPHproto
         public MainWindow()
             {
             InitializeComponent();
-            root=new Node(RootPanel,true);
+            root=new Node(RootPanel);
             }
         }
     }

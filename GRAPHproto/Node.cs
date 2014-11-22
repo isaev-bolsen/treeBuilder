@@ -19,41 +19,61 @@ namespace GRAPHproto
 
     class Node : StackPanel
         {
-        private bool isRoot;
         private StackPanel ParentPanel;
         private FrameworkElement NodeVisualObject = new Ellipse() {Width=15, Height=15, Margin=new Thickness(15), Fill=Brushes.Black};
-        private StackPanel thisHorisontalPanel = new StackPanel() {Orientation=Orientation.Horizontal };
+        private StackPanel HorisontalPanel = new StackPanel() {Orientation=Orientation.Horizontal };
+
+        private Canvas EdgeCanvas = new Canvas() {HorizontalAlignment=HorizontalAlignment.Center };
+        private Binding EdgeBaseBinding = new Binding("ActualWidth");
+        protected Line Edge;
+
+
+        public void UpdateEdges(object sender, SizeChangedEventArgs e)
+            {
+            double Xpos=-this.HorisontalPanel.ActualWidth/2;
+            foreach (Node node in this.HorisontalPanel.Children)
+                {
+                //this.NodeVisualObject.Margin = new Thickness(15,15,15,e.NewSize.Width *15/45);
+                node.Edge.Y1 = -NodeVisualObject.Margin.Bottom - NodeVisualObject.Height / 2;
+                node.Edge.Y2 = NodeVisualObject.Margin.Top + NodeVisualObject.Height / 2;
+                Xpos += node.ActualWidth / 2;
+                node.Edge.X2 = Xpos;
+                Xpos += node.ActualWidth / 2;
+                }
+            }
 
         public void AddChild(object sender, MouseButtonEventArgs e)
             {
             switch (e.ChangedButton)
                 {
                 case MouseButton.Left:
-                        new Node(thisHorisontalPanel);
-                        //this.NodeVisualObject.Margin = new Thickness(
-                        //    this.NodeVisualObject.Margin.Left,
-                        //    this.NodeVisualObject.Margin.Top,
-                        //    this.NodeVisualObject.Margin.Right,
-                        //    this.NodeVisualObject.Margin.Bottom + 5
-                        //    );
+                    Line edge = new Line() {X1 = 0, X2 = 0, Stroke = Brushes.Black};
+                    EdgeCanvas.Children.Add(edge);
+                    new Node(HorisontalPanel, edge);
                     break;
                 case MouseButton.Right:
-                    if (!isRoot)
-                    { 
-                        ParentPanel.Children.Remove(this); 
+                    if (Edge!=null)
+                        {
+                        ParentPanel.Children.Remove(this);
+                        ((Canvas)Edge.Parent).Children.Remove(Edge);
                         }
                     break;
                 }
             }
 
-        public Node(StackPanel parentPanel, bool isroot=false)
+        public Node(StackPanel parentPanel, Line edge=null)
             {
-            isRoot = isroot;
             NodeVisualObject.MouseDown += AddChild;
             ParentPanel = parentPanel;
             ParentPanel.Children.Add(this);
             this.Children.Add(NodeVisualObject);
-            this.Children.Add(thisHorisontalPanel);
+            this.Children.Add(EdgeCanvas);
+            this.Children.Add(HorisontalPanel);
+            this.HorisontalPanel.AddHandler(FrameworkElement.SizeChangedEvent, new SizeChangedEventHandler(UpdateEdges), true);
+            if (edge != null)
+                {
+                Edge = edge;
+                } 
             }
         }
     }
