@@ -15,29 +15,41 @@ using System.Windows.Shapes;
 
 namespace GRAPHproto
     {
-
-
     class Node : StackPanel
         {
         private StackPanel ParentPanel;
-        private FrameworkElement NodeVisualObject = new Ellipse() {Width=15, Height=15, Margin=new Thickness(15), Fill=Brushes.Black};
+        private FrameworkElement NodeVisualObject = new Ellipse() {Width=25, Height=25, Margin=new Thickness(30), Fill=Brushes.Black};
         private StackPanel HorisontalPanel = new StackPanel() {Orientation=Orientation.Horizontal };
-
-        private Canvas EdgeCanvas = new Canvas() {HorizontalAlignment=HorizontalAlignment.Center };
-        private Binding EdgeBaseBinding = new Binding("ActualWidth");
+        protected Canvas EdgeCanvas = new Canvas() { HorizontalAlignment = HorizontalAlignment.Center };
         protected Line Edge;
-
+        protected TextBox EdgeCaption = new TextBox();
 
         public void UpdateEdges(object sender, SizeChangedEventArgs e)
             {
             double Xpos=-this.HorisontalPanel.ActualWidth/2;
             foreach (Node node in this.HorisontalPanel.Children)
                 {
-                //this.NodeVisualObject.Margin = new Thickness(15,15,15,e.NewSize.Width *15/45);
+                this.NodeVisualObject.Margin = new Thickness(30, 30, 30, Math.Sqrt(e.NewSize.Width / 45) * 20);
                 node.Edge.Y1 = -NodeVisualObject.Margin.Bottom - NodeVisualObject.Height / 2;
                 node.Edge.Y2 = NodeVisualObject.Margin.Top + NodeVisualObject.Height / 2;
                 Xpos += node.ActualWidth / 2;
                 node.Edge.X2 = Xpos;
+                double corner =  Math.Atan2(node.Edge.Y1 - node.Edge.Y2,node.Edge.X1 - node.Edge.X2)*180/Math.PI;
+                if (corner < -90)
+                    {
+                    corner = 180 + corner;
+                    node.EdgeCaption.RenderTransformOrigin = new Point(0, 0);
+                    node.EdgeCaption.RenderTransform = new RotateTransform(corner);
+                    Canvas.SetLeft(node.EdgeCaption, Xpos);
+                    Canvas.SetTop(node.EdgeCaption, -20);
+                    }
+                else
+                    {
+                    node.EdgeCaption.RenderTransformOrigin = new Point(0, 1);
+                    node.EdgeCaption.RenderTransform = new RotateTransform(corner);
+                    Canvas.SetLeft(node.EdgeCaption, Xpos - 10);
+                    Canvas.SetTop(node.EdgeCaption, 0);
+                    }
                 Xpos += node.ActualWidth / 2;
                 }
             }
@@ -49,19 +61,23 @@ namespace GRAPHproto
                 case MouseButton.Left:
                     Line edge = new Line() {X1 = 0, X2 = 0, Stroke = Brushes.Black};
                     EdgeCanvas.Children.Add(edge);
-                    new Node(HorisontalPanel, edge);
+                    TextBox edgeCaption = new TextBox() {Background = null, SelectionBrush = null};
+                    Canvas.SetLeft(edgeCaption,  -5);
+                    EdgeCanvas.Children.Add(edgeCaption);
+                    new Node(HorisontalPanel, edge, edgeCaption);
                     break;
                 case MouseButton.Right:
                     if (Edge!=null)
                         {
                         ParentPanel.Children.Remove(this);
                         ((Canvas)Edge.Parent).Children.Remove(Edge);
+                        ((Canvas)EdgeCaption.Parent).Children.Remove(EdgeCaption);
                         }
                     break;
                 }
             }
 
-        public Node(StackPanel parentPanel, Line edge=null)
+        public Node(StackPanel parentPanel, Line edge=null, TextBox edgeCaption=null)
             {
             NodeVisualObject.MouseDown += AddChild;
             ParentPanel = parentPanel;
@@ -73,6 +89,7 @@ namespace GRAPHproto
             if (edge != null)
                 {
                 Edge = edge;
+                EdgeCaption = edgeCaption;
                 } 
             }
         }
